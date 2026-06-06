@@ -1,4 +1,4 @@
-;@Jan 2026, BlackSheepBoy69. AHK 1.1.37.02 32-bit. Windows XP or higher
+﻿;@June 2026, BlackSheepBoy69. AHK 1.1.37.02 32-bit. Windows XP or higher
 
 SetWorkingDir, %A_ScriptDir%	 ;Without this, drag and drop may cause vpk build error
 
@@ -14,7 +14,7 @@ if A_Args.Length() > 0
 else
 	Edit3Text := "Edit 3"
 Gui, Main:Add, Edit, R2 W375 vEdit3, %Edit3Text%	 ; Edit 3
-Gui, Main:Add, Tab3,, Nintendo 64|RetroArch|Nintendo DS|Dreamcast
+Gui, Main:Add, Tab3,, Nintendo 64|RetroArch|Nintendo DS|Dreamcast|Pico-8
 Gui, Main:Add, Button, gBuild_N64_bubble, build N64 bubble
 Gui, Main:Tab, 2
 Gui, Main:Add, Text,, RETROARCH CORE, must start with "app0:" and end with "_libretro.self"`nex: app0:snes9x2005_libretro.self
@@ -24,6 +24,9 @@ Gui, Main:Tab, 3
 Gui, Main:Add, Button, gBuild_NDS_bubble, build Nintendo DS bubble
 Gui, Main:Tab, 4
 Gui, Main:Add, Button, gBuild_DC_bubble, build Dreamcast bubble
+Gui, Main:Tab, 5
+Gui, Main:Add, Text,, ~May be possible to do Pico-8 through RetroArch~`nFAKE-08 needs a / after : in ROM FULL PATH for some reason.`n Example: ux0:/p8carts/superdiscbox-0.p8.png
+Gui, Main:Add, Button, gBuild_P8_bubble, build FAKE-08 bubble
 Gui, Main:Tab  ; Future controls are not part of any tab control.
 Gui, Main:Add, Picture, x882 Y2 W28 H28, assets/icon0.png
 If FileExist("assets/bg.png") && FileExist("assets/startup.png") {
@@ -82,6 +85,13 @@ FileAppend, System.executeUri("psgm:play?titleid=FLYCASTDC&param=%Edit3%")`nSyst
 Goto, Messagebox_Zone
 Return
 
+Build_P8_bubble:
+Gosub, Pre_Check
+;FileAppend, os.uri("psgm:play?titleid=FAKE00008&param=%Edit3%")`nos.exit()`n, main.lua
+FileAppend, System.executeUri("psgm:play?titleid=FAKE00008&param=%Edit3%")`nSystem.exit()`n, index.lua
+Goto, Messagebox_Zone
+Return
+
 
 Pre_Check:
 Gui, Main:Submit, NoHide
@@ -106,20 +116,21 @@ Else
 Return
 
 Run_Exe:
+vpk_title := RegExReplace(Edit1, "[\\/:*?""<>|]", "_")
 If FileExist("assets/bg.png") && FileExist("assets/startup.png") {
-    msgbox, 262148, %A_ScriptName%, These commands will be run:`n`nvita-mksfoex -s TITLE_ID=%Edit2% "%Edit1%" param.sfo`n`nvita-pack-vpk -s param.sfo -b eboot.bin "%Edit1%.vpk" -a assets/icon0.png=sce_sys/icon0.png -a assets/bg.png=sce_sys/livearea/contents/bg.png -a assets/startup.png=sce_sys/livearea/contents/startup.png -a assets/template.xml=sce_sys/livearea/contents/template.xml -a index.lua=index.lua
+    msgbox, 262148, %A_ScriptName%, These commands will be run:`n`nvita-mksfoex -s TITLE_ID=%Edit2% "%Edit1%" param.sfo`n`nvita-pack-vpk -s param.sfo -b eboot.bin "%vpk_title%.vpk" -a assets/icon0.png=sce_sys/icon0.png -a assets/bg.png=sce_sys/livearea/contents/bg.png -a assets/startup.png=sce_sys/livearea/contents/startup.png -a assets/template.xml=sce_sys/livearea/contents/template.xml -a index.lua=index.lua
     IfMsgBox Yes
     {
 	RunWait, vita-mksfoex -s TITLE_ID=%Edit2% "%Edit1%" param.sfo
-	RunWait, vita-pack-vpk -s param.sfo -b eboot.bin "%Edit1%.vpk" -a assets/icon0.png=sce_sys/icon0.png -a assets/bg.png=sce_sys/livearea/contents/bg.png -a assets/startup.png=sce_sys/livearea/contents/startup.png -a assets/template.xml=sce_sys/livearea/contents/template.xml -a index.lua=index.lua
+	RunWait, vita-pack-vpk -s param.sfo -b eboot.bin "%vpk_title%.vpk" -a assets/icon0.png=sce_sys/icon0.png -a assets/bg.png=sce_sys/livearea/contents/bg.png -a assets/startup.png=sce_sys/livearea/contents/startup.png -a assets/template.xml=sce_sys/livearea/contents/template.xml -a index.lua=index.lua
 	msgbox, 262144, %A_ScriptName%, done
     }
 } Else {
-    msgbox, 262148, %A_ScriptName%, Missing either %A_ScriptDir%\assets\bg.png (this is fine) or missing %A_ScriptDir%\assets\startup.png (this is fine). These commands will be run:`n`nvita-mksfoex -s TITLE_ID=%Edit2% "%Edit1%" param.sfo`n`nvita-pack-vpk -s param.sfo -b eboot.bin "%Edit1%.vpk" -a assets/icon0.png=sce_sys/icon0.png -a index.lua=index.lua
+    msgbox, 262148, %A_ScriptName%, Missing either %A_ScriptDir%\assets\bg.png (this is fine) or missing %A_ScriptDir%\assets\startup.png (this is fine). These commands will be run:`n`nvita-mksfoex -s TITLE_ID=%Edit2% "%Edit1%" param.sfo`n`nvita-pack-vpk -s param.sfo -b eboot.bin "%vpk_title%.vpk" -a assets/icon0.png=sce_sys/icon0.png -a index.lua=index.lua
     IfMsgBox Yes
     {
 	RunWait, vita-mksfoex -s TITLE_ID=%Edit2% "%Edit1%" param.sfo
-	RunWait, vita-pack-vpk -s param.sfo -b eboot.bin "%Edit1%.vpk" -a assets/icon0.png=sce_sys/icon0.png -a index.lua=index.lua
+	RunWait, vita-pack-vpk -s param.sfo -b eboot.bin "%vpk_title%.vpk" -a assets/icon0.png=sce_sys/icon0.png -a index.lua=index.lua
 	msgbox, 262144, %A_ScriptName%, done
     }
 }
