@@ -9,7 +9,7 @@
 <p>--------------------------------------------------</p>
 <p>128x128 png with 256 palette named icon0.png</p>
 <p>--------------------------------------------------</p>
-<p>380x158 png with 256 palette named startup.png (optional)</p>
+<p>280x158 png with 256 palette named startup.png (optional)</p>
 <p>840x500 png with 256 palette named bg.png (optional)</p>
 <p>--------------------------------------------------</p>
 <p>The images must be placed in the assets folder before you run Super Bubble Builder. If startup.png or bg.png are missing, it will proceed with just icon0, and Vita will generate the rainbow background. You can make a png's palette 256 by dragging them to a batch script in the assets folder called 'Drag PNG here to reduce palette to 256.bat'</p>
