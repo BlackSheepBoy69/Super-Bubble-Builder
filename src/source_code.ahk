@@ -1,10 +1,11 @@
 ﻿;@June 2026, BlackSheepBoy69. AHK 1.1.37.02 32-bit. Windows XP or higher
 
 SetWorkingDir, %A_ScriptDir%	 ;Without this, drag and drop may cause vpk build error
+Gui, Main: -dpiscale		 ;Lazy fix for high resolution monitors. There is another -dpiscale lower in the code for window 2
 
 
 
-Gui, Main:Add, Text,, --------OPTIONAL---------`n380 x 158 startup.png`n840 x 500 bg.png`n---REQUIREMENTS---`n128 x 128 icon0.png`n------------------------------------`nTITLE, 50 characters or less.`nex: Super Mario 64
+Gui, Main:Add, Text,, --------OPTIONAL---------`n280 x 158 startup.png`n840 x 500 bg.png`n---REQUIREMENTS---`n128 x 128 icon0.png`n------------------------------------`nTITLE, 50 characters or less.`nex: Super Mario 64
 Gui, Main:Add, Edit, R2 W375 vEdit1, Edit 1
 Gui, Main:Add, Text,, TITLEID, 9 capital letters or numbers.`nexample: DAEDMAR64
 Gui, Main:Add, Edit, R2 W375 vEdit2, Edit 2
@@ -42,6 +43,7 @@ WinGetPos, mainX, mainY,,, Super Bubble Builder window 1
 
 
 Gui, Secondary:New
+Gui, Secondary: -dpiscale		 ;Lazy fix for high resolution monitors.
 Gui, Secondary:+E0x20 +LastFound +AlwaysOnTop
 WinSet, TransColor, F0F0F0       ;make color transparent
 If FileExist("assets/bg.png") && FileExist("assets/startup.png")
@@ -138,6 +140,12 @@ FileDelete, param.sfo
 FileDelete, index.lua
 Return
 
+
+guisize:
+GuiControl, Move, mypic, % "w" . A_GuiWidth . " h" . A_GuiWidth
+winmove, A,,,, A_GuiWidth, A_GuiWidth
+winset redraw
+return
 
 
 CheckWindowMove:
