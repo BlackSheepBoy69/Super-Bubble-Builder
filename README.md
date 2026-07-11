@@ -15,7 +15,3 @@
 <p>The images must be placed in the assets folder before you run Super Bubble Builder. If startup.png or bg.png are missing, it will proceed with just icon0, and Vita will generate the rainbow background. You can make a png's palette 256 by dragging them to a batch script in the assets folder called 'Drag PNG here to reduce palette to 256.bat'</p>
 
 <p>Releases page: https://github.com/BlackSheepBoy69/Super-Bubble-Builder/releases</p>
-
-<p>User 'After-Pop-2000' has reported that "If the images in the GUI are screwed up, right click the program and choose: Properties > Compatibility > Change high DPI settings, enable Override high DPI scaling behavior performed by: and set it to <b>System</b>"</p>
-
-<p>If you are experiencing this issue, please post about it in the issues section, it would be good to know more about it.</p>
