@@ -15,7 +15,7 @@ if A_Args.Length() > 0
 else
 	Edit3Text := "Edit 3"
 Gui, Main:Add, Edit, R2 W375 vEdit3, %Edit3Text%	 ; Edit 3
-Gui, Main:Add, Tab3,, Nintendo 64|RetroArch|Nintendo DS|Dreamcast|Pico-8
+Gui, Main:Add, Tab3,, Nintendo 64|RetroArch|Nintendo DS|Dreamcast|Pico-8|3DS
 Gui, Main:Add, Button, gBuild_N64_bubble, build N64 bubble
 Gui, Main:Tab, 2
 Gui, Main:Add, Text,, RETROARCH CORE, must start with "app0:" and end with "_libretro.self"`nex: app0:snes9x2005_libretro.self
@@ -28,6 +28,9 @@ Gui, Main:Add, Button, gBuild_DC_bubble, build Dreamcast bubble
 Gui, Main:Tab, 5
 Gui, Main:Add, Text,, ~May be possible to do Pico-8 through RetroArch~`nFAKE-08 needs a / after : in ROM FULL PATH for some reason.`n Example: ux0:/p8carts/superdiscbox-0.p8.png
 Gui, Main:Add, Button, gBuild_P8_bubble, build FAKE-08 bubble
+Gui, Main:Tab, 6
+Gui, Main:Add, Text,, Experimental
+Gui, Main:Add, Button, gBuild_3DS_bubble, build Azahar 3DS bubble
 Gui, Main:Tab  ; Future controls are not part of any tab control.
 Gui, Main:Add, Picture, x882 Y2 W28 H28, assets/icon0.png
 If FileExist("assets/bg.png") && FileExist("assets/startup.png") {
@@ -94,6 +97,12 @@ FileAppend, System.executeUri("psgm:play?titleid=FAKE00008&param=%Edit3%")`nSyst
 Goto, Messagebox_Zone
 Return
 
+Build_3DS_bubble:
+Gosub, Pre_Check
+;FileAppend, os.uri("psgm:play?titleid=AZAHARPSV&param=%Edit3%")`nos.exit()`n, main.lua
+FileAppend, System.executeUri("psgm:play?titleid=AZAHARPSV&param=%Edit3%")`nSystem.exit()`n, index.lua
+Goto, Messagebox_Zone
+Return
 
 Pre_Check:
 Gui, Main:Submit, NoHide
@@ -140,12 +149,6 @@ FileDelete, param.sfo
 FileDelete, index.lua
 Return
 
-
-guisize:
-GuiControl, Move, mypic, % "w" . A_GuiWidth . " h" . A_GuiWidth
-winmove, A,,,, A_GuiWidth, A_GuiWidth
-winset redraw
-return
 
 
 CheckWindowMove:
